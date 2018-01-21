@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body, html {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+			canvas {
+				background-color: black;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas />
+		<script type="application/javascript">
+			const canvas = document.querySelector('canvas');
+			const ctx = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			const { width, height } = canvas;
+			function loop() {
+			  clear();
+			  update();
+			  draw();
+			  queue();
+			}
+			function clear() {
+			  ctx.clearRect(0, 0, width, height);
+			}
+			function queue() {
+			  window.requestAnimationFrame(loop);
+			}
+			function update() {
+
+			}
+			function draw() {
+
+			}
+			loop();
+			function Vec2(x, y) {
+				this.x = x || 0;
+				this.y = y || 0;
+			}
+			function Polar(r, theta) {
+				this.x = r || 0;
+				this.y = theta || 0;
+			}
+			Vec2.prototype.add = function(vector) {
+				this.x += vector.x;
+				this.y += vector.y;
+				return this;
+			}
+			Vec2.prototype.length = function() {
+				const { x, y } = this;
+				return Math.sqrt(x*x + y*y);
+			}
+			Vec2.prototype.toPolar = function() {
+				const { x, y } = this;
+				return new Polar(this.length(), Math.atan2(y,x));
+			}
+			Polar.prototype.add = function(polar) {
+				this.r += polar.r;
+				this.theta += polar.theta;
+			}
+			Polar.prototype.multiply = function(polar) {
+				this.r = this.r * polar.r;
+				this.theta = this.theta + polar.theta;
+			}
+			Polar.prototype.length = function() {
+				return this.r;
+			}
+			Polar.prototype.toVec2 = function() {
+				const { r, theta } = this;
+				return new Vec2(Math.cos(theta) * r, Math.sin(theta) * r);
+			}
+			function Particle(position, velocity, acceleration) {
+				this.position = position || new Vector(0, 0);
+				this.velocity = velocity || new Vector(0, 0);
+				this.acceleration = acceleration || new Vector(0, 0);
+			}
+			Particle.prototype.move = function() {
+				this.velocity.add(this.acceleration);
+				this.position.add(this.velocity);
+			}
+		</script>
+  </body>
+</html>
